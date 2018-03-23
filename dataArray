@@ -1,0 +1,100 @@
+/*
+ * Author: Dallas LeGrande
+ * Date; March 23, 2018
+ * Overview: Data Structures lab6 - creating a simple hash table using open addressing with linear probing
+ */
+package lab6_simplehashtable;
+
+public class dataArray {
+    
+    private data[] array;
+
+    public dataArray()
+    {
+        array = new data [5];
+    }
+    //method to insert an int and a string into a node and then inserting the node into the table
+    public void insert(int z, String s)
+    {
+        data a = new data(z,s);
+        array = checkSize(array);
+        if(array[a.key % array.length] == null)//if the spot in the array is empty input the data into that spot
+                {
+                     array[a.key % array.length] = a; //put the data into the array in the spot it hashes to
+                }
+                else{ //if the array spot already has data in it, go to the next available spot
+                    int b = a.key % array.length; //integer b = the original hash number
+                    int v = array.length;
+                    while(array[b] != null) //while the array is full at the hash number, increase the hash number by 1 until you get an empty spot
+                    {
+                        if(b == array.length-1)//if we get to the end of the array and have not found an empty spot start back at the beginning of the array
+                        {
+                            b = -1;
+                        }
+                        b++;
+                    }//end while loop
+                    array[b] = a; //put the data into the new array in the spot it now hashes to
+                }//end else
+    }//end of insert method
+    //method to check the size of the array
+    public data[] checkSize(data[] a)
+    {
+        int counter = 0; //for tracking how many elements are in the array
+        for(int k =0; k < a.length; k++) //go through the array 
+        {
+            if(a[k] != null) //look for spots in the array that are filled. Increase the counter if they are filled
+            {
+                counter++;
+            }
+        }// end of for loop
+        if(counter >= (a.length * .8)) //if the elements in the array fill 80% or more of the array then increase the size of the array
+            {
+                a = increaseArray(a);
+            }
+        return a;
+    }// end of checkSize method
+    //method to increase the size of the array then re-hash everything that was in the old array into the new array
+    public data[] increaseArray(data[] a)
+    {   
+        int size = a.length * 2; //get the size of the new array
+        data[] tempArray = a; //put the current smaller array in a temp variable
+        a = new data[size]; //create a new array that is double the size of the original
+        for(int j = 0; j < tempArray.length; j++)
+        {
+            if(tempArray[j] != null)//go through the original smaller array and look for data
+            {
+                if(a[tempArray[j].key % a.length] == null)//if the spot in the new larger array is empty input the data into that spot
+                {
+                     a[tempArray[j].key % a.length] = tempArray[j]; //put the data into the new array in the spot it now hashes to
+                }
+                else{ //if the new larger array spot already has data in it, go to the next available spot
+                    int b = tempArray[j].key % a.length; //integer b = the original hash number
+                    while(a[b] != null) //while the array is full at the hash number, increase the hash number by 1 until you get an empty spot
+                    {
+                        if(b == a.length-1)//if we get to the end of the array and have not found an empty spot start back at the beginning of the array
+                        {
+                            b = -1; //has to be -1 since b is always getting incremented on the next line. -1 then goes to 0 and is still in the array
+                        }
+                        b++;
+                    }//end while loop
+                    a[b] = tempArray[j]; //put the data into the new array in the spot it now hashes to
+                }//end else
+            }//end of tempArray[j] if statement
+        }//end of for loop
+        return a;
+    }//end of increaseArray
+    //method to print the table
+    public void printTable()
+    {
+        for(int i = 0; i < array.length; i++)
+        {
+            if(array[i] != null){//if the array spot is not null print the value
+                System.out.println("array[" + i + "] | " + array[i].key + "," + array[i].value);
+            }
+            else{// if the array spot is null then print the value
+                System.out.println("array[" + i + "] | " + array[i]);
+            }
+        }//end of for loop
+    }//end of print table method
+}//end of dataArray class
+
