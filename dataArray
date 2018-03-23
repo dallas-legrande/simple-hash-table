@@ -8,6 +8,7 @@ package lab6_simplehashtable;
 public class dataArray {
     
     private data[] array;
+    static int counter = 0;
 
     public dataArray()
     {
@@ -22,31 +23,24 @@ public class dataArray {
                 {
                      array[a.key % array.length] = a; //put the data into the array in the spot it hashes to
                 }
-                else{ //if the array spot already has data in it, go to the next available spot
-                    int b = a.key % array.length; //integer b = the original hash number
-                    int v = array.length;
-                    while(array[b] != null) //while the array is full at the hash number, increase the hash number by 1 until you get an empty spot
-                    {
-                        if(b == array.length-1)//if we get to the end of the array and have not found an empty spot start back at the beginning of the array
-                        {
-                            b = -1;
-                        }
-                        b++;
-                    }//end while loop
-                    array[b] = a; //put the data into the new array in the spot it now hashes to
-                }//end else
+        else{ //if the array spot already has data in it, go to the next available spot
+            int b = a.key % array.length; //integer b = the original hash number
+            int v = array.length;
+            while(array[b] != null) //while the array is full at the hash number, increase the hash number by 1 until you get an empty spot
+            {
+                if(b == array.length-1)//if we get to the end of the array and have not found an empty spot start back at the beginning of the array
+                {
+                    b = -1;
+                }
+                b++;
+            }//end while loop
+            array[b] = a; //put the data into the new array in the spot it now hashes to
+        }//end else
+        counter++;
     }//end of insert method
     //method to check the size of the array
     public data[] checkSize(data[] a)
     {
-        int counter = 0; //for tracking how many elements are in the array
-        for(int k =0; k < a.length; k++) //go through the array 
-        {
-            if(a[k] != null) //look for spots in the array that are filled. Increase the counter if they are filled
-            {
-                counter++;
-            }
-        }// end of for loop
         if(counter >= (a.length * .8)) //if the elements in the array fill 80% or more of the array then increase the size of the array
             {
                 a = increaseArray(a);
