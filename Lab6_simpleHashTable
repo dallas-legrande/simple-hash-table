@@ -1,0 +1,51 @@
+/*
+ * Author: Dallas LeGrande
+ * Date; March 23, 2018
+ * Overview: Data Structures lab6 - creating a simple hash table using open addressing with linear probing
+ */
+package lab6_simplehashtable;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
+public class Lab6_simpleHashTable {
+
+    public static void main(String[] args) {
+        Lab6_simpleHashTable go = new Lab6_simpleHashTable();
+        go.readWord();
+    }
+    //reads the file line by line then separates it into word by word
+    public void readWord()
+    {
+        dataArray run = new dataArray(); //creates an instance of the dataArray
+        try{ 
+            //provides a path to the file being read from
+            Path path =  Paths.get("./input/StarWarsPlanets.csv");
+            
+            //opens the bufferedreader to be able to read a file. The file location is held in the variable "path"
+            try (BufferedReader reader = Files.newBufferedReader(path)){
+               String line;
+               
+               //reads line by line until the line is null and the document is complete
+               while ((line = reader.readLine()) != null)
+               {
+                   //splits the line every time there is a comma and puts each word into an array
+                   String[] words = line.split(",");
+                   for(int i = 0; i < words.length; i+=2)
+                   {
+                       run.insert(Integer.parseInt(words[i]), words[i+1]); //converts the first string to a number and inserts the int and string into the table                      
+                   }
+                   run.printTable(); //print the hash table (array)
+                   System.out.println();
+               }//end of while loop
+           }//end of try for buffered reader
+        }//end of try for paths
+        catch (IOException e){
+            System.out.println("File not found");
+              }
+    }//end of readWord method
+}//end of class
