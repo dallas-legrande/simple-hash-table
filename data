@@ -1,0 +1,17 @@
+/*
+ * Author: Dallas LeGrande
+ * Date; March 23, 2018
+ * Overview: Data Structures lab6 - creating a simple hash table using open addressing with linear probing
+ */
+package lab6_simplehashtable;
+
+public class data {
+    public int key; //planet number
+    public String value; //planet name
+    
+    public data(int a, String b)
+    {
+        key = a; //sets the inputted integer value to the key
+        value = b; //sets the inputted string value to the value
+    }  
+}
